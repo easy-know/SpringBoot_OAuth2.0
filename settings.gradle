@@ -1,0 +1,4 @@
+rootProject.name = 'OAuth2.0'
+include 'oauth-api'
+include 'oauth-server'
+
