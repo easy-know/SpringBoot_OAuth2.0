@@ -9,6 +9,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/domain-rds" />
+            <option value="$PROJECT_DIR$/domain-redis" />
             <option value="$PROJECT_DIR$/oauth-api" />
             <option value="$PROJECT_DIR$/oauth-server" />
           </set>

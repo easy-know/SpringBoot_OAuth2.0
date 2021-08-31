@@ -1,5 +1,9 @@
 package com.oauth.entity;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -9,6 +13,9 @@ import javax.persistence.Id;
  * @author leejinho
  * @version 1.0
  */
+@Getter
+@Setter
+@Builder
 @Entity
 public class OAuthClientDetail {
     @Id
