@@ -1,2 +1,9 @@
 server:
   port: 8081
+
+security:
+  oauth2:
+    authorization:
+      check-token-access: isAuthenticated()
+    jwt:
+      signKey: 123@#$$
