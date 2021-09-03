@@ -3,4 +3,9 @@ jar.enabled = true
 
 
 dependencies {
+    // 프로덕션
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    // 로컬
+    implementation 'it.ozimov:embedded-redis:0.7.2'
 }
