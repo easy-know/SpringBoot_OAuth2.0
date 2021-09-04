@@ -33,6 +33,7 @@ subprojects {
         testCompile 'org.springframework.security:spring-security-test'
         testCompile 'org.projectlombok:lombok:1.18.20'
         testAnnotationProcessor('org.projectlombok:lombok:1.18.20')
+        runtimeOnly('org.springframework.boot:spring-boot-devtools')
     }
 
     test {

@@ -1,4 +1,4 @@
-package com.oauth.api;
+package com.oauth.api.application;
 
 import com.oauth.application.dto.ApplicationDto;
 import com.oauth.application.service.ApplicationService;
