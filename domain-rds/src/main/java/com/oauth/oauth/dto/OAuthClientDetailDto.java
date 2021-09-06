@@ -1,6 +1,6 @@
 package com.oauth.oauth.dto;
 
-import com.oauth.application.entity.ApplicationEntity;
+import com.oauth.application.entity.Application;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 public class OAuthClientDetailDto {
     private String clientId;                  
-    private ApplicationEntity applicationEntity;
+    private Application applicationEntity;
     private String resourceIds;               
     private String clientSecret;              
     private String scope;                     

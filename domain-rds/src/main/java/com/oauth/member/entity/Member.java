@@ -1,5 +1,7 @@
 package com.oauth.member.entity;
 
+import com.oauth.application.entity.Application;
+import com.oauth.base.BaseEntity;
 import com.oauth.role.Authority;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,6 +13,10 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -24,7 +30,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberEntity {
+public class Member extends BaseEntity {
 
     @Id @GeneratedValue(strategy = IDENTITY)
     @Column(insertable = false, updatable = false)
@@ -36,5 +42,8 @@ public class MemberEntity {
 
     @Enumerated(EnumType.STRING)
     private Authority authority;
+
+    @OneToMany(mappedBy = "member")
+    private List<Application> applicationList;
 
 }

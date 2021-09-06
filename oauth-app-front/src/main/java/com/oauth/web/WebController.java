@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class WebController {
     @GetMapping("sign-up")
     public String signUp() {
-        return "user/sign-up";
+        return "member/sign-up";
     }
 
     @GetMapping("sign-in")
     public String signIn() {
-        return "user/sign-in";
+        return "member/sign-in";
     }
 }

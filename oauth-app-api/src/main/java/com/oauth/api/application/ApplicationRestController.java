@@ -5,6 +5,7 @@ import com.oauth.application.service.ApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -15,11 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class ApplicationRestController {
 
     private final ApplicationService applicationService;
 
-    @PostMapping
+    @PostMapping("/application")
     public ResponseEntity save(ApplicationDto applicationDto) {
         String savedId = applicationService.save(applicationDto);
         return ResponseEntity.ok().body(savedId);

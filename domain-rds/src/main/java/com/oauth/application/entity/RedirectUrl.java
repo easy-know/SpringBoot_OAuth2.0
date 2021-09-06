@@ -1,6 +1,5 @@
 package com.oauth.application.entity;
 
-import com.oauth.application.entity.ApplicationEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,5 +30,5 @@ public class RedirectUrl {
 
     @ManyToOne
     @JoinColumn(name = "BOARD_ID")
-    private ApplicationEntity applicationEntity;
+    private Application applicationEntity;
 }

@@ -1,8 +1,7 @@
 package com.oauth.oauth.entity;
 
-import com.oauth.application.entity.ApplicationEntity;
+import com.oauth.application.entity.Application;
 import com.oauth.base.BaseEntity;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,13 +24,13 @@ import javax.persistence.OneToOne;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OAuthClientDetailEntity extends BaseEntity {
+public class OAuthClientDetail extends BaseEntity {
     @Id
     @Column(name = "client_id")
     private String clientId;               //   varchar(256) not null
 
     @OneToOne(mappedBy = "clientId", fetch = FetchType.LAZY)
-    private ApplicationEntity applicationEntity;
+    private Application applicationEntity;
 
     private String resourceIds;            //   varchar(256) null,
     private String clientSecret;           //   varchar(256) null,

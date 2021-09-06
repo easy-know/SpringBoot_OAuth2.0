@@ -1,13 +1,12 @@
 package com.oauth.application.entity;
 
 import com.oauth.base.BaseEntity;
-import com.oauth.oauth.entity.OAuthClientDetailEntity;
-import lombok.AccessLevel;
+import com.oauth.member.entity.Member;
+import com.oauth.oauth.entity.OAuthClientDetail;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,6 +15,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -34,7 +34,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApplicationEntity extends BaseEntity {
+public class Application extends BaseEntity {
 
     @Id @GeneratedValue(strategy = IDENTITY)
     @Column(insertable = false, updatable = false)
@@ -42,8 +42,13 @@ public class ApplicationEntity extends BaseEntity {
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
-    private OAuthClientDetailEntity clientId;
+    private OAuthClientDetail clientId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @OneToMany(mappedBy = "applicationEntity")
     private List<RedirectUrl> redirectUrls;
+
 }

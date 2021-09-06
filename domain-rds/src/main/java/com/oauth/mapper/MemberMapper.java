@@ -1,7 +1,7 @@
 package com.oauth.mapper;
 
 import com.oauth.member.dto.MemberDto;
-import com.oauth.member.entity.MemberEntity;
+import com.oauth.member.entity.Member;
 import org.mapstruct.Mapper;
 
 /**
@@ -12,5 +12,5 @@ import org.mapstruct.Mapper;
  */
 
 @Mapper(componentModel = "spring")
-public interface MemberMapper extends StructMapper<MemberDto, MemberEntity> {
+public interface MemberMapper extends StructMapper<MemberDto, Member> {
 }

@@ -2,7 +2,7 @@ package com.oauth.member.service;
 
 import com.oauth.mapper.MemberMapper;
 import com.oauth.member.dto.MemberDto;
-import com.oauth.member.entity.MemberEntity;
+import com.oauth.member.entity.Member;
 import com.oauth.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class MemberService {
     private final MemberMapper userMapper;
 
     public Long save(MemberDto userDto) {
-        MemberEntity savedEntity = userRepository.save(userMapper.toEntity(userDto));
+        Member savedEntity = userRepository.save(userMapper.toEntity(userDto));
         return savedEntity.getId();
     }
 }

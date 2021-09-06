@@ -1,7 +1,6 @@
 package com.oauth.application.service;
 
 import com.oauth.application.dto.ApplicationDto;
-import com.oauth.application.entity.ApplicationEntity;
 import com.oauth.application.repository.ApplicationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

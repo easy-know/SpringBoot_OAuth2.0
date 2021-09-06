@@ -1,6 +1,6 @@
 package com.oauth.oauth.repository;
 
-import com.oauth.oauth.entity.OAuthClientDetailEntity;
+import com.oauth.oauth.entity.OAuthClientDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
  * @version 1.0
  */
 @Repository
-public interface OAuthClientRepository extends JpaRepository<OAuthClientDetailEntity, Long> {
+public interface OAuthClientRepository extends JpaRepository<OAuthClientDetail, Long> {
 }
