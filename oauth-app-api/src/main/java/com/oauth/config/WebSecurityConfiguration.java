@@ -1,5 +1,6 @@
 package com.oauth.config;
 
+import com.oauth.security.LoginSuccessHandler;
 import com.oauth.security.UserAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -36,22 +38,25 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .headers().frameOptions().disable()
-                .and()
+//                .headers().frameOptions().disable()
+//                .and()
 
-                .cors()
-                .and()
+//                .cors()
+//                .and()
 
                 .csrf().disable()
                 .authorizeRequests()
 //                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll() // - (1)
-                .antMatchers("/", "/api/member", "/api/application", "/h2-console/**").permitAll()
+                .antMatchers("/", "/api/member", "/h2-console/**").permitAll()
+                .and()
+                .authorizeRequests()
                 .anyRequest().authenticated()
 
                 .and()
                     .formLogin()
 //                    .loginPage("http://localhost:8080/sign-up")
                     .loginProcessingUrl("/authenticate")
+                    .successHandler(authenticationSuccessHandler())
                     .permitAll()
 
                 .and()
@@ -62,6 +67,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(authenticationProvider);
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return new LoginSuccessHandler();
     }
 
     @Bean

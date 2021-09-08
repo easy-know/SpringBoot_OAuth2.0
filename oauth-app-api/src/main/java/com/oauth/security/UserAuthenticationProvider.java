@@ -7,6 +7,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -28,24 +30,22 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-
         String username = authentication.getName();
         String password = (String) authentication.getCredentials();
 
-        CustomUserDetails userDetails = (CustomUserDetails) userDetailsService.loadUserByUsername(username);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
         if (userDetails == null) {
             throw new BadCredentialsException("username is not found. username=" + username);
         }
 
-        log.info(password);
-        log.info(userDetails.getPassword());
-
         if (!this.passwordEncoder.matches(password, userDetails.getPassword())) {
             throw new BadCredentialsException("password is not matched");
         }
 
-        return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), password, userDetails.getAuthorities());
+        log.info(userDetails.getAuthorities().toString());
+
+        return new UsernamePasswordAuthenticationToken(username, password, userDetails.getAuthorities());
 
     }
 

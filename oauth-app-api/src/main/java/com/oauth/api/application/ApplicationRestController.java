@@ -5,7 +5,11 @@ import com.oauth.application.service.ApplicationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,18 +34,9 @@ public class ApplicationRestController {
     private final ApplicationService applicationService;
 
     @GetMapping
-    public ResponseEntity load(Principal principal) {
-        log.info(principal.getName());
-
-        Object holder = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails)holder;
-        System.out.println(userDetails);
-
-        String username = ((UserDetails) holder).getUsername();
-        String password = ((UserDetails) holder).getUsername();
-
-        log.info(username);
-        log.info(password);
+    public ResponseEntity load(Authentication authentication, Principal principal) {
+        System.out.println("authentication: " + authentication);
+        System.out.println("principal: " + principal);
 
         return ResponseEntity.ok(applicationService.loadAll());
     }

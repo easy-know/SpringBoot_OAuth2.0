@@ -45,7 +45,7 @@ public class Member extends BaseEntity {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Authority authority;
+    private Role authority;
 
     @OneToMany(mappedBy = "member")
     private List<Application> applicationList;

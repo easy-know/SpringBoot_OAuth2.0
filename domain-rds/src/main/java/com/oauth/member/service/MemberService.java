@@ -3,7 +3,6 @@ package com.oauth.member.service;
 import com.oauth.member.dto.MemberDto;
 import com.oauth.member.entity.Member;
 import com.oauth.member.repository.MemberRepository;
-import com.oauth.member.entity.Authority;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,16 +24,18 @@ public class MemberService {
 
     public Long save(MemberDto memberDto) {
         validateDuplicateMember(memberDto);
-        Member member = Member.builder()
-                .email(memberDto.getEmail())
-                .password(memberDto.getPassword())
-                .authority(Authority.MEMBER)
-                .build();
 
         // todo: MapStruct로 변경
 
-        Member savedEntity = memberRepository.save(member);
-        return savedEntity.getId();
+//        Member member = Member.builder()
+//                .email(memberDto.getEmail())
+//                .password(memberDto.getPassword())
+//                .authority(Authority.USER)
+//                .build();
+
+//        Member savedEntity = memberRepository.save(member);
+
+        return memberRepository.save(memberDto.toEntity()).getId();
     }
 
     private void validateDuplicateMember(MemberDto memberDto) {

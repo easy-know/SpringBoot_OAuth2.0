@@ -39,6 +39,5 @@ public class MemberRestController {
 
         return ResponseEntity.created(URI.create("http://localhost:8080/application"))
                 .body(userService.save(userDto));
-//        return ResponseEntity.ok().body(userService.save(userDto));
     }
 }

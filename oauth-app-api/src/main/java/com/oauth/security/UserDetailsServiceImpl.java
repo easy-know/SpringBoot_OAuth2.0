@@ -1,19 +1,20 @@
 package com.oauth.security;
 
 import com.oauth.member.entity.Member;
+import com.oauth.member.entity.Role;
 import com.oauth.member.repository.MemberRepository;
-import com.oauth.member.entity.Authority;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Description :
@@ -30,18 +31,20 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.info("UserDetailsServiceImpl - loadUserByUsername(): " + username);
+        log.info(username);
 
         Member member = memberRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
 
-        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        if (username.equals("admin")) {
-            grantedAuthorities.add(new SimpleGrantedAuthority(Authority.ADMIN.getValue()));
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        if (("admin@example.com").equals(username)) {
+            authorities.add(new SimpleGrantedAuthority(Role.ADMIN.getValue()));
         } else {
-            grantedAuthorities.add(new SimpleGrantedAuthority(Authority.MEMBER.getValue()));
+            authorities.add(new SimpleGrantedAuthority(Role.MEMBER.getValue()));
         }
 
-        return new CustomUserDetails(member);
+        return new User(username, member.getPassword(), authorities);
     }
 }

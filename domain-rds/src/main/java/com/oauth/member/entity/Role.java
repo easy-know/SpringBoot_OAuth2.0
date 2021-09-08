@@ -11,9 +11,9 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public enum Authority {
-    MEMBER("ROLE_MEMBER"),
-    ADMIN("ROLE_ADMIN");
+public enum Role {
+    ADMIN("ROLE_ADMIN"),
+    MEMBER("ROLE_MEMBER");
 
     private String value;
 }
