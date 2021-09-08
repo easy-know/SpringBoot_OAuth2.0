@@ -1,38 +1,83 @@
 <!DOCTYPE html>
 <html lang="ko"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/default}" xmlns:th="http://www.w3.org/1999/xhtml">
+      layout:decorate="~{layout/default}">
 <div layout:fragment="content">
     <h1 class="mb-3">로그인</h1>
-    <form id="sign_in_form" class="mb-3">
+    <form id="sign_in_form" class="mb-3" method="post" action="http://localhost:8081/authenticate">
         <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">이메일</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            <label for="username" class="form-label">이메일</label>
+            <input type="email" name="username" class="form-control" id="username">
         </div>
         <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">비밀번호</label>
-            <input type="password" class="form-control" id="exampleInputPassword1">
+            <label for="password" class="form-label">비밀번호</label>
+            <input type="password" name="password" class="form-control" id="password">
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
     <a href="/sign-up" class="card-link">회원 가입</a>
-    <script>
-        $("form").on("submit", function(event) {
-            event.preventDefault();
+<!--    <script>-->
+<!--        const SIGN_IN_FORM = $("#sign_in_form");-->
 
-            const SIGN_IN_FORM = $("#sign_in_form");
+<!--        $("form").on("submit", function(event) {-->
+<!--            event.preventDefault();-->
+<!--            // let csrfParameter = $('meta[name="_csrf_parameter"]').attr('content')-->
+<!--            // let csrfHeader = $('meta[name="_csrf_header"]').attr('content')-->
+<!--            // let csrfToken = $('meta[name="_csrf"]').attr('content')-->
+<!--            let params = "email=" + $('#email').val() + "&password=" + $('#password').val()-->
 
-            let signInFormObject = SIGN_IN_FORM.serializeObject();
-            console.log(signInFormObject);
+<!--            // $.ajaxSetup({-->
+<!--            //     beforeSend: function(xhr) {-->
+<!--            //         xhr.setRequestHeader(csrfHeader, csrfToken);-->
+<!--            //     }-->
+<!--            // })-->
 
-            $.post("http://localhost:8081/api/member",
-                JSON.stringify(signInFormObject),
-                function(data, status){
-                    alert("Data: " + data + "\nStatus: " + status);
-                    location.href = "www.naver.com";
-                }
-            );
-        });
-    </script>
+<!--            const data = {-->
+<!--                username: $('#username').val(),-->
+<!--                password: $('#password').val(),-->
+<!--            };-->
+
+<!--            $.ajax({-->
+<!--                url : "http://localhost:8081/authenticate",-->
+<!--                type : "post",-->
+<!--                dataType : "json",-->
+<!--                data : data,-->
+<!--                success : function(response) {-->
+<!--                    console.log(response);-->
+<!--                }, error : function(jqXHR, status, e) {-->
+<!--                    console.error(status + " : " + e);-->
+<!--                }-->
+<!--            });-->
+
+<!--            // let signInFormObject = SIGN_IN_FORM.serializeObject();-->
+<!--            //-->
+<!--            // const data = {-->
+<!--            //     email: $('#email').val(),-->
+<!--            //     password: $('#password').val(),-->
+<!--            // };-->
+<!--            //-->
+<!--            // $.ajax({-->
+<!--            //     type: 'POST',-->
+<!--            //     url: 'http://localhost:8081/authenticate',-->
+<!--            //     dataType: 'json',-->
+<!--            //     contentType: 'application/x-www-form-urlencoded; charset=utf-8',-->
+<!--            //     data: data-->
+<!--            // }).done(function (res) {-->
+<!--            //     alert("로그인 되었습니다.");-->
+<!--            //     location.href = "/"-->
+<!--            // }).fail(function (error) {-->
+<!--            //     alert(JSON.stringify(error));-->
+<!--            // });-->
+
+<!--            // $.post("http://localhost:8081/authenticate",-->
+<!--            //     signInFormObject,-->
+<!--            //     function(data, status){-->
+<!--            //         console.log("Data: " + data);-->
+<!--            //         console.log("Status: " + status);-->
+<!--            //         location.href = "application";-->
+<!--            //     }-->
+<!--            // );-->
+<!--        });-->
+<!--    </script>-->
 </div>
 </html>

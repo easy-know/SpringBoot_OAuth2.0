@@ -2,10 +2,12 @@ package com.oauth.member.entity;
 
 import com.oauth.application.entity.Application;
 import com.oauth.base.BaseEntity;
-import com.oauth.role.Authority;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +16,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import java.util.List;
 
@@ -28,8 +29,11 @@ import static javax.persistence.GenerationType.IDENTITY;
  */
 @Getter
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@DynamicInsert
+@DynamicUpdate
 public class Member extends BaseEntity {
 
     @Id @GeneratedValue(strategy = IDENTITY)

@@ -1,6 +1,6 @@
 package com.oauth.member.dto;
 
-import com.oauth.role.Authority;
+import com.oauth.member.entity.Authority;
 import lombok.Getter;
 import lombok.Setter;
 

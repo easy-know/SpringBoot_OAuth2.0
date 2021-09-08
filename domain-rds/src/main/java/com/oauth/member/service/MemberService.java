@@ -1,12 +1,14 @@
 package com.oauth.member.service;
 
-import com.oauth.mapper.MemberMapper;
 import com.oauth.member.dto.MemberDto;
 import com.oauth.member.entity.Member;
 import com.oauth.member.repository.MemberRepository;
+import com.oauth.member.entity.Authority;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Description :
@@ -19,11 +21,27 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MemberService {
 
-    private final MemberRepository userRepository;
-    private final MemberMapper userMapper;
+    private final MemberRepository memberRepository;
 
-    public Long save(MemberDto userDto) {
-        Member savedEntity = userRepository.save(userMapper.toEntity(userDto));
+    public Long save(MemberDto memberDto) {
+        validateDuplicateMember(memberDto);
+        Member member = Member.builder()
+                .email(memberDto.getEmail())
+                .password(memberDto.getPassword())
+                .authority(Authority.MEMBER)
+                .build();
+
+        // todo: MapStruct로 변경
+
+        Member savedEntity = memberRepository.save(member);
         return savedEntity.getId();
+    }
+
+    private void validateDuplicateMember(MemberDto memberDto) {
+        List<Member> findMembers =
+                memberRepository.findMembersByEmail(memberDto.getEmail());
+        if (!findMembers.isEmpty()) {
+            throw new IllegalStateException("이미 존재하는 회원입니다.");
+        }
     }
 }

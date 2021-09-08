@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<div layout:fragment="content">
+    <div class="row justify-content-md-center">
+        <h3 class="mb-3">전체 애플리케이션(3)</h3>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#staticBackdrop">
+            애플리케이션 추가하기
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+             aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticModalLabel">애플리케이션 추가</h5>
+                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="application_create_form">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">애플리케이션 이름</label>
+                                <input type="text" class="form-control" id="name" aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                <label for="company" class="form-label">회사명</label>
+                                <input type="text" class="form-control" id="company">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <!--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="list-group">
+            <!--            <a href="#" class="list-group-item list-group-item-action mb-3" aria-current="true">-->
+            <!--                <div class="d-flex w-100 justify-content-between">-->
+            <!--                    <h5 class="mb-1">List group item heading</h5>-->
+            <!--                    <small>3 days ago</small>-->
+            <!--                </div>-->
+            <!--                <p class="mb-1">Some placeholder content in a paragraph.</p>-->
+            <!--            </a>-->
+            <!--            <a href="#" class="list-group-item list-group-item-action mb-3" aria-current="true">-->
+            <!--                <div class="d-flex w-100 justify-content-between">-->
+            <!--                    <h5 class="mb-1">List group item heading</h5>-->
+            <!--                    <small>3 days ago</small>-->
+            <!--                </div>-->
+            <!--                <p class="mb-1">Some placeholder content in a paragraph.</p>-->
+            <!--            </a>-->
+            <!--            <a href="#" class="list-group-item list-group-item-action mb-3a" aria-current="true">-->
+            <!--                <div class="d-flex w-100 justify-content-between">-->
+            <!--                    <h5 class="mb-1">List group item heading</h5>-->
+            <!--                    <small>3 days ago</small>-->
+            <!--                </div>-->
+            <!--                <p class="mb-1">Some placeholder content in a paragraph.</p>-->
+            <!--            </a>-->
+        </div>
+    </div>
+    <script>
+        const APPLICATION_CREATE_FORM = $("#application_create_form");
+
+        $(document).ready(function () {
+            loadData();
+        });
+
+        function loadData() {
+            $.get("http://localhost:8081/api/application", function (result) {
+            })
+        };
+
+        $("form").on("submit", function (event) {
+            event.preventDefault();
+
+            let signInFormObject = APPLICATION_CREATE_FORM.serializeObject();
+
+            $.post("http://localhost:8081/api/application",
+                JSON.stringify(signInFormObject),
+                function (data, status) {
+                    alert("Data: " + data + "\nStatus: " + status);
+                    loadData();
+                }
+            );
+        });
+    </script>
+</div>
+</html>
