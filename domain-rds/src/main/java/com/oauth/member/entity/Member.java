@@ -1,5 +1,6 @@
 package com.oauth.member.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oauth.application.entity.Application;
 import com.oauth.base.BaseEntity;
 import lombok.AllArgsConstructor;
@@ -37,7 +38,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 public class Member extends BaseEntity {
 
     @Id @GeneratedValue(strategy = IDENTITY)
-    @Column(insertable = false, updatable = false)
+    @Column(name = "member_id", insertable = false, updatable = false)
     private Long id;
 
     private String email;
@@ -47,6 +48,7 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role authority;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "member")
     private List<Application> applicationList;
 

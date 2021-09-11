@@ -1,8 +1,9 @@
 package com.oauth.application.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oauth.base.BaseEntity;
 import com.oauth.member.entity.Member;
-import com.oauth.oauth.entity.OAuthClientDetail;
+import com.oauth.oauth_detail.entity.OAuthClientDetail;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -50,13 +51,13 @@ public class Application extends BaseEntity {
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
+    @JsonIgnore
     private OAuthClientDetail clientId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "applicationEntity")
-    private List<RedirectUrl> redirectUrls;
+
 
 }

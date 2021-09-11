@@ -4,4 +4,6 @@ include 'oauth-app-server'
 include 'domain-rds'
 include 'domain-redis'
 include 'oauth-app-front'
+include 'oauth-app-client'
+include 'system-core'
 

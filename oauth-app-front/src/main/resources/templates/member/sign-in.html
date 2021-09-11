@@ -4,80 +4,49 @@
       layout:decorate="~{layout/default}">
 <div layout:fragment="content">
     <h1 class="mb-3">로그인</h1>
-    <form id="sign_in_form" class="mb-3" method="post" action="http://localhost:8081/authenticate">
+    <form id="sign_in_form" class="mb-3" method="post">
         <div class="mb-3">
-            <label for="username" class="form-label">이메일</label>
-            <input type="email" name="username" class="form-control" id="username">
+            <label for="email" class="form-label">이메일</label>
+            <input type="email" name="email" class="form-control" id="email">
         </div>
         <div class="mb-3">
             <label for="password" class="form-label">비밀번호</label>
             <input type="password" name="password" class="form-control" id="password">
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">로그인</button>
     </form>
     <a href="/sign-up" class="card-link">회원 가입</a>
-<!--    <script>-->
-<!--        const SIGN_IN_FORM = $("#sign_in_form");-->
+    <script>
+        $("#sign_in_form").on("submit", function (event) {
+            event.preventDefault();
+            let signInFormObject = $("#sign_in_form").serializeObject();
 
-<!--        $("form").on("submit", function(event) {-->
-<!--            event.preventDefault();-->
-<!--            // let csrfParameter = $('meta[name="_csrf_parameter"]').attr('content')-->
-<!--            // let csrfHeader = $('meta[name="_csrf_header"]').attr('content')-->
-<!--            // let csrfToken = $('meta[name="_csrf"]').attr('content')-->
-<!--            let params = "email=" + $('#email').val() + "&password=" + $('#password').val()-->
+            $.ajax({
+                url: "http://localhost:8081/api/login",
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(signInFormObject),
+                success: function (data, status) {
+                    if (status === "success") {
+                        loginSuccessReturn(data);
+                    }
+                }
+            });
+        });
 
-<!--            // $.ajaxSetup({-->
-<!--            //     beforeSend: function(xhr) {-->
-<!--            //         xhr.setRequestHeader(csrfHeader, csrfToken);-->
-<!--            //     }-->
-<!--            // })-->
+        function loginSuccessReturn(data) {
+            let accessToken = data.accessToken;
+            let refreshToken = data.refreshToken;
 
-<!--            const data = {-->
-<!--                username: $('#username').val(),-->
-<!--                password: $('#password').val(),-->
-<!--            };-->
+            console.log(accessToken);
+            console.log(refreshToken);
 
-<!--            $.ajax({-->
-<!--                url : "http://localhost:8081/authenticate",-->
-<!--                type : "post",-->
-<!--                dataType : "json",-->
-<!--                data : data,-->
-<!--                success : function(response) {-->
-<!--                    console.log(response);-->
-<!--                }, error : function(jqXHR, status, e) {-->
-<!--                    console.error(status + " : " + e);-->
-<!--                }-->
-<!--            });-->
+            localStorage.setItem("accessToken", accessToken);
+            localStorage.setItem("refreshToken", refreshToken);
 
-<!--            // let signInFormObject = SIGN_IN_FORM.serializeObject();-->
-<!--            //-->
-<!--            // const data = {-->
-<!--            //     email: $('#email').val(),-->
-<!--            //     password: $('#password').val(),-->
-<!--            // };-->
-<!--            //-->
-<!--            // $.ajax({-->
-<!--            //     type: 'POST',-->
-<!--            //     url: 'http://localhost:8081/authenticate',-->
-<!--            //     dataType: 'json',-->
-<!--            //     contentType: 'application/x-www-form-urlencoded; charset=utf-8',-->
-<!--            //     data: data-->
-<!--            // }).done(function (res) {-->
-<!--            //     alert("로그인 되었습니다.");-->
-<!--            //     location.href = "/"-->
-<!--            // }).fail(function (error) {-->
-<!--            //     alert(JSON.stringify(error));-->
-<!--            // });-->
-
-<!--            // $.post("http://localhost:8081/authenticate",-->
-<!--            //     signInFormObject,-->
-<!--            //     function(data, status){-->
-<!--            //         console.log("Data: " + data);-->
-<!--            //         console.log("Status: " + status);-->
-<!--            //         location.href = "application";-->
-<!--            //     }-->
-<!--            // );-->
-<!--        });-->
-<!--    </script>-->
+            location.href = "/application";
+        }
+    </script>
 </div>
 </html>

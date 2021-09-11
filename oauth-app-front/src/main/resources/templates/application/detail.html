@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<div layout:fragment="content">
+    <div class="row justify-content-center">
+        <div class="col-8 mb-3">
+            <h3>기본 정보</h3>
+            <table id="app_info_table" class="table">
+                <tr>
+                    <th class="w-25" scope="row">앱 이름</th>
+                    <td>Mark</td>
+                </tr>
+                <tr>
+                    <th scope="row">사업자명</th>
+                    <td>Jacob</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-8 mb-3">
+            <div class="row justify-content-between">
+                <h3>앱 키</h3>
+            </div>
+            <table id="key_table" class="table">
+                <tr>
+                    <th class="w-25" scope="row">Client-Id</th>
+                    <td>Mark</td>
+                </tr>
+                <tr>
+                    <th scope="row">Client-Secret</th>
+                    <td>Jacob</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-8 mb-3">
+            <div class="row justify-content-between">
+                <div class="col-4">
+                    <h3>Redirect Url</h3>
+                </div>
+                <div class="col-4 text-lg-end">
+                    <button type="button" class="btn btn-primary">삭제</button>
+                    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#redirectUrlModal">
+                        수정
+                    </button>
+                </div>
+                <div class="modal fade" id="redirectUrlModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
+                     aria-labelledby="redirectUrlModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticModalLabel">Redirect Url 추가</h5>
+                                <button type="button" class="btn-close" data-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <form id="application_create_form" method="post">
+                                <div class="modal-body">
+                                    <input type="text" class="form-control" name="redirectUrl" id="redirectUrl">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">추가</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table id="redirect_url_table" class="table">
+                <tr>
+                    <th class="w-25" scope="row">Redirect URI</th>
+                    <td> ..</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        let name = "[[${name}]]";
+        let accessToken = "";
+
+        $(document).ready(function () {
+            setToken(loadData);
+        });
+
+        function setToken() {
+            accessToken = localStorage.getItem("accessToken");
+            console.log("accessToken: " + accessToken);
+            loadData();
+        }
+
+        function loadData() {
+            const url = "http://localhost:8081/api/application/" + name;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                headers: {
+                    "Authorization": 'Bearer ' + accessToken
+                },
+                success: function (data, status) {
+                    if (status === "success") {
+                        console.log(data);
+                    }
+                }
+            });
+        };
+    </script>
+</div>
+</html>

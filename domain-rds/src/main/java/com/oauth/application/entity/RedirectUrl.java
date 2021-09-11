@@ -1,5 +1,6 @@
 package com.oauth.application.entity;
 
+import com.oauth.oauth_detail.entity.OAuthClientDetail;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -7,10 +8,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import static javax.persistence.GenerationType.IDENTITY;
 
 /**
  * Description :
@@ -24,11 +28,10 @@ import javax.persistence.ManyToOne;
 @NoArgsConstructor
 @Builder
 public class RedirectUrl {
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue(strategy = IDENTITY)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "BOARD_ID")
-    private Application applicationEntity;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id")
+    private OAuthClientDetail oAuthClientDetail;
 }

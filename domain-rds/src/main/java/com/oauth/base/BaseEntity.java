@@ -20,6 +20,9 @@ import java.time.LocalDateTime;
  * </pre>
  *
  */
+
+// todo: BaseEntity랑 BaseTimeEntity랑 분리
+    
 @MappedSuperclass
 @Setter @Getter
 @EntityListeners(AuditingEntityListener.class)

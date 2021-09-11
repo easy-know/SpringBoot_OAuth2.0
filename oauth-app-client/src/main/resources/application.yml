@@ -1,0 +1,21 @@
+server:
+  port: 8000
+
+spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          gstim:
+            authorization_uri: http://localhost:8081/oauth/authorize
+            token_uri: http://localhost:8081/oauth/token
+            user-info-uri: http://localhost:8081/v1/user/me
+            user_name_attribute: id
+        registration:
+          client-id: 7ca36edabe4f86c8ce1038eee6c752f5
+          client-secret: 3thUo86Wa6TpuY8kV4FlHvYBcfBXH4Jr
+          redirect_uri: '{baseUrl}/{action}/oauth2/code/{registrationId}'
+          authorization_grant_type: authorization_code
+          scope: profile
+          client-name: gsitm
+          client-authentication-method: POST

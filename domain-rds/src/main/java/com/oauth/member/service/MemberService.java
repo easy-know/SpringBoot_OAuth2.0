@@ -22,18 +22,10 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    public Long save(MemberDto memberDto) {
+    public Long signup(MemberDto memberDto) {
         validateDuplicateMember(memberDto);
 
         // todo: MapStruct로 변경
-
-//        Member member = Member.builder()
-//                .email(memberDto.getEmail())
-//                .password(memberDto.getPassword())
-//                .authority(Authority.USER)
-//                .build();
-
-//        Member savedEntity = memberRepository.save(member);
 
         return memberRepository.save(memberDto.toEntity()).getId();
     }

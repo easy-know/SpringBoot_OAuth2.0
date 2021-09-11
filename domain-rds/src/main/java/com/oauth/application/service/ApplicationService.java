@@ -3,8 +3,9 @@ package com.oauth.application.service;
 import com.oauth.application.dto.ApplicationDto;
 import com.oauth.application.entity.Application;
 import com.oauth.application.repository.ApplicationRepository;
-import com.oauth.oauth.entity.OAuthClientDetail;
+import com.oauth.oauth_detail.entity.OAuthClientDetail;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +26,11 @@ public class ApplicationService {
     private final ApplicationRepository applicationRepository;
 
     public List<Application> loadAll() {
-        return applicationRepository.findAll();
+        return applicationRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+    }
+
+    public Application loadDetail(String name) {
+        return applicationRepository.findByName(name).get();
     }
 
     @Transactional

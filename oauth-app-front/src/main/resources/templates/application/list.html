@@ -19,73 +19,93 @@
                         <h5 class="modal-title" id="staticModalLabel">애플리케이션 추가</h5>
                         <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form id="application_create_form">
+                    <form id="application_create_form" method="post">
                         <div class="modal-body">
                             <div class="mb-3">
                                 <label for="name" class="form-label">애플리케이션 이름</label>
-                                <input type="text" class="form-control" id="name" aria-describedby="emailHelp">
+                                <input type="text" class="form-control" name="name" id="name"
+                                       aria-describedby="emailHelp">
                             </div>
                             <div class="mb-3">
                                 <label for="company" class="form-label">회사명</label>
-                                <input type="text" class="form-control" id="company">
+                                <input type="text" class="form-control" name="company" id="company">
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <!--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-        <div class="list-group">
-            <!--            <a href="#" class="list-group-item list-group-item-action mb-3" aria-current="true">-->
-            <!--                <div class="d-flex w-100 justify-content-between">-->
-            <!--                    <h5 class="mb-1">List group item heading</h5>-->
-            <!--                    <small>3 days ago</small>-->
-            <!--                </div>-->
-            <!--                <p class="mb-1">Some placeholder content in a paragraph.</p>-->
-            <!--            </a>-->
-            <!--            <a href="#" class="list-group-item list-group-item-action mb-3" aria-current="true">-->
-            <!--                <div class="d-flex w-100 justify-content-between">-->
-            <!--                    <h5 class="mb-1">List group item heading</h5>-->
-            <!--                    <small>3 days ago</small>-->
-            <!--                </div>-->
-            <!--                <p class="mb-1">Some placeholder content in a paragraph.</p>-->
-            <!--            </a>-->
-            <!--            <a href="#" class="list-group-item list-group-item-action mb-3a" aria-current="true">-->
-            <!--                <div class="d-flex w-100 justify-content-between">-->
-            <!--                    <h5 class="mb-1">List group item heading</h5>-->
-            <!--                    <small>3 days ago</small>-->
-            <!--                </div>-->
-            <!--                <p class="mb-1">Some placeholder content in a paragraph.</p>-->
-            <!--            </a>-->
+        <div id="application_list" class="list-group">
+
         </div>
     </div>
     <script>
-        const APPLICATION_CREATE_FORM = $("#application_create_form");
+        let accessToken = "";
 
         $(document).ready(function () {
-            loadData();
+            setToken(loadData);
         });
 
+        function setToken() {
+            accessToken = localStorage.getItem("accessToken");
+            console.log("accessToken: " + accessToken);
+            loadData();
+        }
+
         function loadData() {
-            $.get("http://localhost:8081/api/application", function (result) {
-            })
+            $.ajax({
+                url: "http://localhost:8081/api/application",
+                type: 'GET',
+                headers: {
+                    "Authorization": 'Bearer ' + accessToken
+                },
+                success: function (data, status) {
+                    if (status === "success") {
+                        // console.log("Data: " + JSON.stringify(data));
+                        showApplication(data);
+                    }
+                }
+            });
         };
+
+        function showApplication(appList) {
+            for (idx in appList) {
+                // console.log(appList[idx]);
+
+                let app = `<a href="/application/${appList[idx].name}" class="list-group-item list-group-item-action mb-3" aria-current="true">
+                               <div class="d-flex w-100 justify-content-between">
+                                   <h5 class="mb-1">${appList[idx].name}</h5>
+                               </div>
+                               <p class="mb-1">${appList[idx].company}</p>
+                           </a>
+                        `;
+
+                $("#application_list").append(app);
+            }
+        }
 
         $("form").on("submit", function (event) {
             event.preventDefault();
 
-            let signInFormObject = APPLICATION_CREATE_FORM.serializeObject();
+            let applicationCreateForm = $("#application_create_form").serializeObject();
 
-            $.post("http://localhost:8081/api/application",
-                JSON.stringify(signInFormObject),
-                function (data, status) {
+            $.ajax({
+                url: "http://localhost:8081/api/application",
+                type: 'POST',
+                headers: {
+                    "Authorization": 'Bearer ' + accessToken
+                },
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(applicationCreateForm),
+                success: function (data, status) {
                     alert("Data: " + data + "\nStatus: " + status);
                     loadData();
                 }
-            );
+            });
         });
     </script>
 </div>

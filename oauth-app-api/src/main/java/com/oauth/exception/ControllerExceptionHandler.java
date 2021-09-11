@@ -1,6 +1,6 @@
 package com.oauth.exception;
 
-import com.oauth.api.application.ApplicationRestController;
+import com.oauth.api.application.rest.ApplicationRestController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -34,18 +34,7 @@
             return obj;
         }
 
-        function ajaxSetup() {
-            let headers = {};
-            headers["Content-Type"] = "application/json; charset=utf-8";
-
-            $.ajaxSetup({
-                headers: headers,
-                crossOrigin : true
-            });
-        }
-
         $(document).ready(function(e){
-            ajaxSetup();
         });
     </script>
 </head>

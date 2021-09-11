@@ -6,12 +6,12 @@
     <h1 class="mb-3">회원가입</h1>
     <form id="sign_up_form">
         <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">이메일</label>
-            <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            <label for="email" class="form-label">이메일</label>
+            <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp">
         </div>
         <div class="mb-3">
-            <label for="password1" class="form-label">비밀번호</label>
-            <input type="password" name="password" class="form-control" id="password1">
+            <label for="password" class="form-label">비밀번호</label>
+            <input type="password" name="password" class="form-control" id="password">
         </div>
 <!--        <div class="mb-3">-->
 <!--            <label for="password2" class="form-label">비밀번호 확인</label>-->
@@ -29,9 +29,7 @@
         $("form").on("submit", function(event) {
             event.preventDefault();
 
-            const SIGNUP_FORM_DATA = $("#sign_up_form");
-
-            let signUpFormDataObject = SIGNUP_FORM_DATA.serializeObject();
+            let signUpFormDataObject = $("#sign_up_form").serializeObject();
             console.log(signUpFormDataObject);
 
             $.post("http://localhost:8081/api/member",
