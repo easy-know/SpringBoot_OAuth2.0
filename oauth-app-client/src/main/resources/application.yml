@@ -2,20 +2,43 @@ server:
   port: 8000
 
 spring:
+  devtools:
+    livereload:
+      enabled: false
+
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/oauth
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+      format_sql: true
+
   security:
     oauth2:
+      jwt:
+        signKey: 123@#$$
       client:
         provider:
           gstim:
-            authorization_uri: http://localhost:8081/oauth/authorize
-            token_uri: http://localhost:8081/oauth/token
-            user-info-uri: http://localhost:8081/v1/user/me
+            authorization_uri: http://localhost:8090/oauth2/authorize
+            token_uri: http://localhost:8090/oauth2/token
+            user-info-uri: http://localhost:8090/v1/user/me
             user_name_attribute: id
         registration:
-          client-id: 7ca36edabe4f86c8ce1038eee6c752f5
-          client-secret: 3thUo86Wa6TpuY8kV4FlHvYBcfBXH4Jr
-          redirect_uri: '{baseUrl}/{action}/oauth2/code/{registrationId}'
-          authorization_grant_type: authorization_code
-          scope: profile
-          client-name: gsitm
-          client-authentication-method: POST
+          gstim:
+            client-id: 5dded16a-bb9f-41de-9869-e80123e31b67
+            client-secret: 5dcc2e84-757e-4c66-b1db-7083451a5a25
+            redirect_uri: '{baseUrl}/{action}/oauth2/code/{registrationId}'
+            authorization_grant_type: authorization_code
+            scope: profile
+            client-name: gsitm
+            client-authentication-method: POST
+
+logging.level:
+  org.hibernate.SQL: debug

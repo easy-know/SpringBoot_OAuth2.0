@@ -1,13 +1,14 @@
 package com.oauth.application.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.oauth.application.entity.RedirectUrl;
+//import com.oauth.application.entity.RedirectUrl;
+
 import com.oauth.member.entity.Member;
 import com.oauth.oauth_detail.entity.OAuthClientDetail;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 
 /**
@@ -16,14 +17,18 @@ import java.util.List;
  * @author leejinho
  * @version 1.0
  */
-@Getter
-@Setter
-public class ApplicationDto {
 
+@Getter @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class ApplicationDto {
     private Long id;
     private String name;
     private String company;
-    private OAuthClientDetail clientId;
+    private String clientId;
+    private String redirectUrls;
+    private OAuthClientDetail oAuthClientDetail;
     private Member member;
-    private List<RedirectUrl> redirectUrls;
+//    private List<RedirectUrl> redirectUrls;
 }

@@ -6,12 +6,12 @@
     <div class="row justify-content-md-center">
         <h3 class="mb-3">전체 애플리케이션(3)</h3>
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#staticBackdrop">
+        <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#applicationAddModal">
             애플리케이션 추가하기
         </button>
 
         <!-- Modal -->
-        <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+        <div class="modal fade" id="applicationAddModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
              aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -73,7 +73,7 @@
 
         function showApplication(appList) {
             for (idx in appList) {
-                // console.log(appList[idx]);
+                console.log(appList[idx]);
 
                 let app = `<a href="/application/${appList[idx].name}" class="list-group-item list-group-item-action mb-3" aria-current="true">
                                <div class="d-flex w-100 justify-content-between">
@@ -92,18 +92,22 @@
 
             let applicationCreateForm = $("#application_create_form").serializeObject();
 
+            console.log(JSON.stringify(applicationCreateForm));
+
             $.ajax({
                 url: "http://localhost:8081/api/application",
                 type: 'POST',
                 headers: {
                     "Authorization": 'Bearer ' + accessToken
                 },
-                dataType: 'json',
                 contentType: 'application/json',
                 data: JSON.stringify(applicationCreateForm),
                 success: function (data, status) {
                     alert("Data: " + data + "\nStatus: " + status);
                     loadData();
+                },
+                complete: function () {
+                    $("#applicationAddModal").modal("hide");
                 }
             });
         });

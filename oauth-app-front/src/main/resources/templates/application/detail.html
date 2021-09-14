@@ -5,16 +5,9 @@
 <div layout:fragment="content">
     <div class="row justify-content-center">
         <div class="col-8 mb-3">
-            <h3>기본 정보</h3>
+            <h3 class="mb-3">기본 정보</h3>
             <table id="app_info_table" class="table">
-                <tr>
-                    <th class="w-25" scope="row">앱 이름</th>
-                    <td>Mark</td>
-                </tr>
-                <tr>
-                    <th scope="row">사업자명</th>
-                    <td>Jacob</td>
-                </tr>
+
             </table>
         </div>
         <div class="col-8 mb-3">
@@ -22,26 +15,13 @@
                 <h3>앱 키</h3>
             </div>
             <table id="key_table" class="table">
-                <tr>
-                    <th class="w-25" scope="row">Client-Id</th>
-                    <td>Mark</td>
-                </tr>
-                <tr>
-                    <th scope="row">Client-Secret</th>
-                    <td>Jacob</td>
-                </tr>
+
             </table>
         </div>
         <div class="col-8 mb-3">
             <div class="row justify-content-between">
-                <div class="col-4">
+                <div id="redirect_url_title">
                     <h3>Redirect Url</h3>
-                </div>
-                <div class="col-4 text-lg-end">
-                    <button type="button" class="btn btn-primary">삭제</button>
-                    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#redirectUrlModal">
-                        수정
-                    </button>
                 </div>
                 <div class="modal fade" id="redirectUrlModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
                      aria-labelledby="redirectUrlModalLabel" aria-hidden="true">
@@ -52,9 +32,9 @@
                                 <button type="button" class="btn-close" data-dismiss="modal"
                                         aria-label="Close"></button>
                             </div>
-                            <form id="application_create_form" method="post">
+                            <form id="redirect_url_add_form" method="post">
                                 <div class="modal-body">
-                                    <input type="text" class="form-control" name="redirectUrl" id="redirectUrl">
+                                    <textarea class="form-control" placeholder="Leave redirect urls here" name="redirectUrl" id="redirectUrl" style="height: 100px"></textarea>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary">추가</button>
@@ -65,29 +45,31 @@
                 </div>
             </div>
             <table id="redirect_url_table" class="table">
-                <tr>
-                    <th class="w-25" scope="row">Redirect URI</th>
-                    <td> ..</td>
-                </tr>
+
             </table>
+            <p class="small w-100">
+                카카오 로그인에서 사용할 OAuth Redirect URI를 설정합니다. (최대 10개)<br>
+                REST API로 개발하는 경우 필수로 설정해야 합니다.
+            </p>
         </div>
     </div>
 
     <script>
         let name = "[[${name}]]";
         let accessToken = "";
+        let oauthClientData = [];
 
         $(document).ready(function () {
-            setToken(loadData);
+            setToken(loadApplicationDetail);
         });
 
         function setToken() {
             accessToken = localStorage.getItem("accessToken");
             console.log("accessToken: " + accessToken);
-            loadData();
+            loadApplicationDetail();
         }
 
-        function loadData() {
+        function loadApplicationDetail() {
             const url = "http://localhost:8081/api/application/" + name;
             $.ajax({
                 url: url,
@@ -97,11 +79,114 @@
                 },
                 success: function (data, status) {
                     if (status === "success") {
-                        console.log(data);
+                        showApplicationDetail(data);
+                        loadOauthClientDetail(data.clientId);
                     }
                 }
             });
         };
+
+        function showApplicationDetail(data) {
+            let app = `
+                        <tr>
+                            <th class="w-25" scope="row">앱 이름</th>
+                            <td>${data.name}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">사업자명</th>
+                            <td>${data.company}</td>
+                        </tr>
+                    `;
+
+            $("#app_info_table").append(app);
+        }
+
+        function loadOauthClientDetail(clientId) {
+            const url = "http://localhost:8081/api/oauth-detail/" + clientId;
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                headers: {
+                    "Authorization": 'Bearer ' + accessToken
+                },
+                success: function (data, status) {
+                    if (status === "success") {
+                        oauthClientData = data;
+                        showOAuthDetail(data);
+                    }
+                }
+            });
+        };
+
+        function showOAuthDetail(data) {
+
+            let app = `
+                        <tr>
+                            <th class="w-25" scope="row">Client-Id</th>
+                            <td>${data.clientId}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Client-Secret</th>
+                            <td>${data.clientSecret}</td>
+                        </tr>
+                    `;
+
+            $("#key_table").append(app);
+
+            if (data.redirectUrls) {
+                let redirectUrlBtns = `
+                    <div id="redirect_btn_group" class="col-4 text-lg-end">
+                        <button type="button" class="btn btn-primary">삭제</button>
+                        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#redirectUrlModal">
+                            수정
+                        </button>
+                    </div>
+                `;
+                $("#redirect_url_title").append(redirectUrlBtns);
+
+                let redirectUrlTable = `
+                    <tr>
+                        <th class="w-25" scope="row">Redirect URI</th>
+                        <td>${data.redirectUrls}</td>
+                    </tr>
+                `;
+
+                $("#redirect_url_table").append(redirectUrlTable);
+            } else {
+                let redirectBtn = `
+                    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#redirectUrlModal">RedirectURI 등록</button>
+                `;
+                $("#redirect_url_table").append(redirectBtn);
+            }
+        }
+
+        $("form").on("submit", function (event) {
+            event.preventDefault();
+
+            let data = {
+                id: oauthClientData.id,
+                webServerRedirectUri: $("#redirectUrl").val()
+            };
+
+            $.ajax({
+                url: "http://localhost:8081/api/oauth-detail/redirect",
+                type: 'POST',
+                headers: {
+                    "Authorization": 'Bearer ' + accessToken
+                },
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (data, status) {
+                    alert("Data: " + data + "\nStatus: " + status);
+                    loadApplicationDetail();
+                },
+                complete : function() {
+                    alert("complete!");
+                    $("#redirectUrlModal").modal("hide");
+                }
+            });
+        });
     </script>
 </div>
 </html>

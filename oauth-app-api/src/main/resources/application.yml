@@ -2,6 +2,9 @@ server:
   port: 8081
 
 spring:
+  devtools:
+    livereload:
+      enabled: false
   datasource:
     url: jdbc:h2:tcp://localhost/~/oauth
     username: sa

@@ -46,7 +46,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         log.info(grantedAuthority.toString());
 
         return new User(
-                String.valueOf(member.getId()),
+                String.valueOf(member.getEmail()),
                 member.getPassword(),
                 Collections.singleton(grantedAuthority)
         );

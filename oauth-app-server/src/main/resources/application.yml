@@ -1,9 +1,35 @@
 server:
-  port: 8081
+  port: 8090
 
-security:
-  oauth2:
-    authorization:
-      check-token-access: isAuthenticated()
-    jwt:
-      signKey: 123@#$$
+spring:
+#  mvc:
+#    static-path-pattern: "/static/**"
+  thymeleaf:
+    cache: false
+    prefix: classpath:templates/
+    suffix: .html
+    check-template-location: true
+  devtools:
+    livereload:
+      enabled: false
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/oauth
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+      format_sql: true
+
+  security:
+    devtools:
+      livereload:
+        enabled: false
+    oauth2:
+      authorization:
+        check-token-access: isAuthenticated()
+      jwt:
+        signKey: 123@#$$

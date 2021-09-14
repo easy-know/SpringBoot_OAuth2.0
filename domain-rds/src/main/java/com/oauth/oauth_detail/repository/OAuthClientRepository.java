@@ -4,6 +4,9 @@ import com.oauth.oauth_detail.entity.OAuthClientDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 /**
  * Description :
  *
@@ -12,4 +15,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface OAuthClientRepository extends JpaRepository<OAuthClientDetail, Long> {
+    Optional<OAuthClientDetail> findByClientId(String clientId);
 }

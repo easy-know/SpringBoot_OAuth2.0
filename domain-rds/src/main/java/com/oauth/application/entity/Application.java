@@ -49,15 +49,15 @@ public class Application extends BaseEntity {
 
     private String company;
 
+    private String clientId;
+
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id")
+    @JoinColumn(name = "oauth_client_detail_id")
     @JsonIgnore
-    private OAuthClientDetail clientId;
+    private OAuthClientDetail oAuthClientDetail;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-
-
 
 }

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-8 py-3">
+            <img src="/images/login_thumbnail.png" class="img-fluid" alt="login_image">
+        </div>
+        <div class="col-4 py-3">
+            <form id="groupware_login_form" method="post">
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email address</label>
+                    <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp">
+                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" name="password" id="password">
+                </div>
+                <button type="submit" class="btn btn-primary">로그인</button>
+            </form>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="agreeModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
+             aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="approval_form" method="post">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">동의하기</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    전체 동의하기
+                                </label>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">동의하고 계속하기</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const APPROVAL_FORM = $("#approval_form");
+        
+        $("#groupware_login_form").on("submit", function (event) {
+            event.preventDefault();
+            let groupwareLoginForm = $("#groupware_login_form").serializeObject();
+
+            $.ajax({
+                url: "http://localhost:8081/api/groupware/login",
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(groupwareLoginForm),
+                success: function (data, status) {
+                    console.log(status + ", " + data);
+                    if (status === "success") {
+                        console.log(data);
+                        $('#agreeModal').modal('show');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert("ajax error: " + error + '\n' + "status: " + status);
+                },
+                complete: function () {
+                    console.log("로그인 끝");
+                }
+            });
+        });
+
+        APPROVAL_FORM.on("submit", function (event) {
+            event.preventDefault();
+            let approvalForm = APPROVAL_FORM.serializeObject();
+
+            $.ajax({
+                url: "http://localhost:8081/api/groupware/login",
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(approvalForm),
+                success: function (data, status) {
+                    console.log(status + ", " + data);
+                    if (status === "success") {
+                        console.log(data);
+                        $('#agreeModal').modal('show');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert("ajax error: " + error + '\n' + "status: " + status);
+                },
+                complete: function () {
+                    console.log("로그인 끝");
+                }
+            });
+        });
+    </script>
+</div>
+</html>

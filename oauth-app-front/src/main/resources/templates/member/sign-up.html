@@ -32,13 +32,17 @@
             let signUpFormDataObject = $("#sign_up_form").serializeObject();
             console.log(signUpFormDataObject);
 
-            $.post("http://localhost:8081/api/member",
-                JSON.stringify(signUpFormDataObject),
-                function(data, status){
-                    alert("Data: " + data + "\nStatus: " + status);
-                    location.href = "http://localhost:8080/sign-in";
+            $.ajax({
+                url: "http://localhost:8081/api/member",
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(signUpFormDataObject),
+                success: function (data, status) {
+                    if (status === "success") {
+                        location.href = "http://localhost:8080/sign-in";
+                    }
                 }
-            );
+            });
         });
     </script>
 </div>

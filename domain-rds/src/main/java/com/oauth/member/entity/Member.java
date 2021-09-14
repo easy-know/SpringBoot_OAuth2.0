@@ -48,8 +48,8 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role authority;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "member")
+    @JsonIgnore
     private List<Application> applicationList;
 
 }
